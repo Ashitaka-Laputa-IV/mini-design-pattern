@@ -39,7 +39,7 @@ class DataExporter(ABC):
         步骤顺序：连接 → 查询 → 格式化 → 关闭
         """
         # TODO: 按顺序调用 connect(), query_data(), format_output(), close()
-        pass
+        raise NotImplementedError
 
     def connect(self):
         """公共步骤：连接数据库"""
@@ -75,7 +75,7 @@ class CSVExporter(DataExporter):
             return ""
         # TODO: 将数据格式化为 CSV 字符串
         # 第一行为表头，后续每行为一条记录
-        pass
+        raise NotImplementedError
 
 
 class JSONExporter(DataExporter):
@@ -116,6 +116,7 @@ class GameLevel(ABC):
         步骤顺序：加载资源 → 初始化敌人 → 开始游戏 → 结束关卡
         """
         # TODO: 按顺序调用各个步骤
+        raise NotImplementedError
 
     def load_assets(self):
         """公共步骤：加载关卡资源"""
@@ -260,4 +261,4 @@ class PDFDataMining(DataMining):
         重写钩子：PDF 不需要分析步骤
         """
         # TODO: 返回 False 跳过 analyze 步骤
-        pass
+        raise NotImplementedError

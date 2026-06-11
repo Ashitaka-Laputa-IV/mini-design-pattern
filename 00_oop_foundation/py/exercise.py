@@ -42,10 +42,8 @@ class BankAccount:
         Raises:
             ValueError: 如果金额 <= 0
         """
-        # TODO: 补全存款逻辑
-        if amount <= 0:
-            raise ValueError("存款金额必须为正数")
-        self._balance += amount
+        # TODO: 补全存款逻辑（验证金额 > 0，更新余额）
+        raise NotImplementedError
 
     def withdraw(self, amount: float) -> None:
         """取款
@@ -56,17 +54,13 @@ class BankAccount:
         Raises:
             ValueError: 如果金额 <= 0 或余额不足
         """
-        # TODO: 补全取款逻辑
-        if amount <= 0:
-            raise ValueError("取款金额必须为正数")
-        if amount > self._balance:
-            raise ValueError("余额不足")
-        self._balance -= amount
+        # TODO: 补全取款逻辑（验证金额 > 0，验证余额充足，更新余额）
+        raise NotImplementedError
 
     def get_balance(self) -> float:
         """获取当前余额"""
-        # TODO: 返回余额
-        return self._balance
+        # TODO: 返回 _balance 的值
+        raise NotImplementedError
 
 
 # ============================================================================
@@ -74,9 +68,9 @@ class BankAccount:
 # ============================================================================
 # 实现支付系统接口 Payment 及其三个实现类：
 #   1. Payment — 抽象基类，声明 pay(amount) 方法
-#   2. Alipay — 支付宝支付，输出 "[支付宝] 支付 ¥xxx"
-#   3. WeChatPay — 微信支付，输出 "[微信支付] 支付 ¥xxx"
-#   4. BankCard — 银行卡支付，输出 "[银行卡] 支付 ¥xxx"
+#   2. Alipay — 支付宝支付，返回 "[支付宝] 支付 ¥xxx"
+#   3. WeChatPay — 微信支付，返回 "[微信支付] 支付 ¥xxx"
+#   4. BankCard — 银行卡支付，返回 "[银行卡] 支付 ¥xxx"
 # ============================================================================
 
 class Payment(ABC):
@@ -100,7 +94,7 @@ class Alipay(Payment):
 
     def pay(self, amount: float) -> str:
         # TODO: 返回 "[支付宝] 支付 ¥xxx" 格式的字符串
-        return f"[支付宝] 支付 ¥{amount}"
+        raise NotImplementedError
 
 
 class WeChatPay(Payment):
@@ -108,7 +102,7 @@ class WeChatPay(Payment):
 
     def pay(self, amount: float) -> str:
         # TODO: 返回 "[微信支付] 支付 ¥xxx" 格式的字符串
-        return f"[微信支付] 支付 ¥{amount}"
+        raise NotImplementedError
 
 
 class BankCard(Payment):
@@ -116,7 +110,7 @@ class BankCard(Payment):
 
     def pay(self, amount: float) -> str:
         # TODO: 返回 "[银行卡] 支付 ¥xxx" 格式的字符串
-        return f"[银行卡] 支付 ¥{amount}"
+        raise NotImplementedError
 
 
 # ============================================================================
@@ -125,7 +119,7 @@ class BankCard(Payment):
 # 实现 Computer 类，组合 CPU / Memory / Storage 部件：
 #   1. CPU — 有 name 属性和 get_info() 方法
 #   2. Memory — 有 capacity 属性和 get_info() 方法
-#   3. Storage — 有 capacity 属性和 get_info() 方法
+#   3. Storage — 有 capacity / type 属性和 get_info() 方法
 #   4. Computer — 组合以上三个部件，有 get_spec() 方法返回完整配置
 # ============================================================================
 
@@ -138,7 +132,7 @@ class CPU:
 
     def get_info(self) -> str:
         # TODO: 返回 CPU 信息，如 "Intel i7-12700 (12核)"
-        return f"{self.name} ({self.cores}核)"
+        raise NotImplementedError
 
 
 class Memory:
@@ -149,7 +143,7 @@ class Memory:
 
     def get_info(self) -> str:
         # TODO: 返回内存信息，如 "16GB DDR4"
-        return f"{self.capacity}"
+        raise NotImplementedError
 
 
 class Storage:
@@ -161,7 +155,7 @@ class Storage:
 
     def get_info(self) -> str:
         # TODO: 返回存储信息，如 "512GB SSD"
-        return f"{self.capacity} {self.storage_type}"
+        raise NotImplementedError
 
 
 class Computer:
@@ -179,10 +173,5 @@ class Computer:
         Returns:
             格式如："品牌: Dell | CPU: Intel i7-12700 (12核) | 内存: 16GB DDR4 | 存储: 512GB SSD"
         """
-        # TODO: 组合各部件的 get_info() 返回完整配置
-        return (
-            f"品牌: {self.brand} | "
-            f"CPU: {self.cpu.get_info()} | "
-            f"内存: {self.memory.get_info()} | "
-            f"存储: {self.storage.get_info()}"
-        )
+        # TODO: 组合各部件的 get_info() 返回完整配置字符串
+        raise NotImplementedError

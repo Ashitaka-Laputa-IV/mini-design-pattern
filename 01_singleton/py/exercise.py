@@ -14,7 +14,6 @@
 """
 
 import threading
-from abc import ABC, abstractmethod
 
 
 # ============================================================================
@@ -39,30 +38,22 @@ class AppConfig:
 
     def __new__(cls, *args, **kwargs):
         # TODO: 实现单例逻辑
-        # 1. 第一次检查 _instance 是否为 None
+        # 1. 第一次检查 _instance 是否为 None（避免每次加锁）
         # 2. 加锁
-        # 3. 第二次检查 _instance
-        # 4. 如果仍为 None，调用 super().__new__(cls)
+        # 3. 第二次检查 _instance（避免竞态条件）
+        # 4. 如果仍为 None，调用 super().__new__(cls) 创建实例
         # 5. 返回 _instance
-        if cls._instance is None:
-            with cls._lock:
-                if cls._instance is None:
-                    cls._instance = super().__new__(cls)
-                    cls._instance._initialized = False
-        return cls._instance
+        raise NotImplementedError
 
     def __init__(self, config: dict = None):
         # TODO: 实现初始化逻辑，确保只初始化一次
         # 提示：用 _initialized 标志位避免重复初始化
-        if self._initialized:
-            return
-        self._config = config or {}
-        self._initialized = True
+        raise NotImplementedError
 
     def get(self, key: str, default=None):
         """获取配置值"""
         # TODO: 返回 key 对应的值，不存在则返回 default
-        return self._config.get(key, default)
+        raise NotImplementedError
 
 
 # ============================================================================
@@ -70,7 +61,7 @@ class AppConfig:
 # ============================================================================
 # 实现 DBConnectionPool，要求：
 #   1. 用元类 SingletonMeta 保证单例
-#   2. acquire() — 获取一个连接（限制最多 3 个连接）
+#   2. acquire() — 获取一个连接（最多 3 个）
 #   3. release(conn) — 释放一个连接
 #   4. 线程安全
 # ============================================================================
@@ -83,23 +74,16 @@ class SingletonMeta(type):
 
     def __call__(cls, *args, **kwargs):
         # TODO: 实现元类单例逻辑（双重检查锁定）
-        if cls not in cls._instances:
-            with cls._lock:
-                if cls not in cls._instances:
-                    instance = super().__call__(*args, **kwargs)
-                    cls._instances[cls] = instance
-        return cls._instances[cls]
+        raise NotImplementedError
 
 
 class DBConnectionPool(metaclass=SingletonMeta):
-    """数据库连接池 — 线程安全单例
-
-    管理最多 3 个数据库连接。
-    """
+    """数据库连接池 — 线程安全单例（最多 3 个连接）"""
 
     MAX_CONNECTIONS = 3
 
     def __init__(self):
+        # __init__ 会被多次调用，需要用标记避免重复初始化
         if hasattr(self, '_initialized') and self._initialized:
             return
         self._available = [f"conn_{i+1}" for i in range(self.MAX_CONNECTIONS)]
@@ -122,12 +106,7 @@ class DBConnectionPool(metaclass=SingletonMeta):
         # 3. 加入 _in_use
         # 4. 返回连接标识
         # 5. 如果无可用连接，抛出 RuntimeError
-        with self._lock:
-            if not self._available:
-                raise RuntimeError("无可用连接")
-            conn = self._available.pop()
-            self._in_use.add(conn)
-            return conn
+        raise NotImplementedError
 
     def release(self, conn: str) -> None:
         """释放一个数据库连接
@@ -143,11 +122,7 @@ class DBConnectionPool(metaclass=SingletonMeta):
         # 2. 验证 conn 在 _in_use 中
         # 3. 从 _in_use 移除
         # 4. 放回 _available
-        with self._lock:
-            if conn not in self._in_use:
-                raise ValueError(f"连接 {conn} 不属于此连接池")
-            self._in_use.remove(conn)
-            self._available.append(conn)
+        raise NotImplementedError
 
     @property
     def available_count(self) -> int:
@@ -198,21 +173,11 @@ class PoolManager:
             RuntimeError: 如果已达到最大实例数且名称为新名称
         """
         # TODO: 实现多例逻辑
-        # 1. 检查 name 是否已有实例
-        # 2. 如果有，直接返回
-        # 3. 如果没有，检查是否已达到 max_instances
-        # 4. 如果未达到，创建新实例并保存
-        # 5. 如果已达到，抛出 RuntimeError
-        with self._lock:
-            if name in self._instances:
-                return self._instances[name]
-            if len(self._instances) >= self._max_instances:
-                raise RuntimeError(
-                    f"已达到最大实例数 ({self._max_instances})，无法创建新实例 '{name}'"
-                )
-            instance = object()
-            self._instances[name] = instance
-            return instance
+        # 1. 检查 name 是否已有实例，有则直接返回
+        # 2. 没有则检查是否已达 max_instances
+        # 3. 未达上限则创建新实例并保存
+        # 4. 已达上限则抛出 RuntimeError
+        raise NotImplementedError
 
     @property
     def instance_count(self) -> int:

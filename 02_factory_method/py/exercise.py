@@ -30,7 +30,7 @@ class EmailNotification:
 
     def send(self, message: str) -> str:
         # TODO: 返回 "[邮件] xxx" 格式字符串
-        return f"[邮件] {message}"
+        raise NotImplementedError
 
 
 class SMSNotification:
@@ -38,7 +38,7 @@ class SMSNotification:
 
     def send(self, message: str) -> str:
         # TODO: 返回 "[短信] xxx" 格式字符串
-        return f"[短信] {message}"
+        raise NotImplementedError
 
 
 class PushNotification:
@@ -46,7 +46,7 @@ class PushNotification:
 
     def send(self, message: str) -> str:
         # TODO: 返回 "[推送] xxx" 格式字符串
-        return f"[推送] {message}"
+        raise NotImplementedError
 
 
 class NotificationFactory:
@@ -66,14 +66,7 @@ class NotificationFactory:
             ValueError: 不支持的 notification_type
         """
         # TODO: 用 if-elif-else 判断类型并创建对应对象
-        if notification_type == "email":
-            return EmailNotification()
-        elif notification_type == "sms":
-            return SMSNotification()
-        elif notification_type == "push":
-            return PushNotification()
-        else:
-            raise ValueError(f"不支持的通知类型: {notification_type}")
+        raise NotImplementedError
 
 
 # ============================================================================
@@ -81,7 +74,7 @@ class NotificationFactory:
 # ============================================================================
 # 用工厂方法模式重构通知系统，要求：
 #   1. NotificationCreator 抽象类，定义 factory_method() 和 send_notification()
-#   2. EmailCreator / SMSNotificationCreator / PushCreator 实现工厂方法
+#   2. EmailCreator / SMSCreator / PushCreator 实现工厂方法
 # ============================================================================
 
 class Notification(ABC):
@@ -92,25 +85,28 @@ class Notification(ABC):
         pass
 
 
-class EmailNotification_v2(Notification):
+class EmailNotificationV2(Notification):
     """邮件通知"""
 
     def send(self, message: str) -> str:
-        return f"[邮件] {message}"
+        # TODO: 实现发送逻辑
+        raise NotImplementedError
 
 
-class SMSNotification_v2(Notification):
+class SMSNotificationV2(Notification):
     """短信通知"""
 
     def send(self, message: str) -> str:
-        return f"[短信] {message}"
+        # TODO: 实现发送逻辑
+        raise NotImplementedError
 
 
-class PushNotification_v2(Notification):
+class PushNotificationV2(Notification):
     """推送通知"""
 
     def send(self, message: str) -> str:
-        return f"[推送] {message}"
+        # TODO: 实现发送逻辑
+        raise NotImplementedError
 
 
 class NotificationCreator(ABC):
@@ -122,34 +118,40 @@ class NotificationCreator(ABC):
         pass
 
     def send_notification(self, message: str) -> str:
-        """使用工厂方法的业务方法"""
+        """使用工厂方法的业务方法
+
+        Args:
+            message: 要发送的消息
+
+        Returns:
+            发送结果字符串
+        """
         # TODO: 调用 create_notification() 创建通知对象，然后调用 send()
-        notification = self.create_notification()
-        return notification.send(message)
+        raise NotImplementedError
 
 
 class EmailCreator(NotificationCreator):
     """邮件通知创建者"""
 
     def create_notification(self) -> Notification:
-        # TODO: 返回 EmailNotification_v2 实例
-        return EmailNotification_v2()
+        # TODO: 返回 EmailNotificationV2 实例
+        raise NotImplementedError
 
 
 class SMSCreator(NotificationCreator):
     """短信通知创建者"""
 
     def create_notification(self) -> Notification:
-        # TODO: 返回 SMSNotification_v2 实例
-        return SMSNotification_v2()
+        # TODO: 返回 SMSNotificationV2 实例
+        raise NotImplementedError
 
 
 class PushCreator(NotificationCreator):
     """推送通知创建者"""
 
     def create_notification(self) -> Notification:
-        # TODO: 返回 PushNotification_v2 实例
-        return PushNotification_v2()
+        # TODO: 返回 PushNotificationV2 实例
+        raise NotImplementedError
 
 
 # ============================================================================
@@ -165,48 +167,24 @@ class CsvParser:
     """CSV 文件解析器"""
 
     def parse(self, filepath: str) -> list:
-        """解析 CSV 文件
-
-        Args:
-            filepath: 文件路径
-
-        Returns:
-            解析后的数据（模拟返回列表）
-        """
         # TODO: 返回模拟解析结果，如 [{"name": "Alice", "age": "30"}, ...]
-        return [{"name": "Alice", "age": "30"}, {"name": "Bob", "age": "25"}]
+        raise NotImplementedError
 
 
 class JsonParser:
     """JSON 文件解析器"""
 
     def parse(self, filepath: str) -> dict:
-        """解析 JSON 文件
-
-        Args:
-            filepath: 文件路径
-
-        Returns:
-            解析后的数据（模拟返回字典）
-        """
         # TODO: 返回模拟解析结果，如 {"name": "Alice", "age": 30}
-        return {"name": "Alice", "age": 30, "city": "Beijing"}
+        raise NotImplementedError
 
 
 class XmlParser:
     """XML 文件解析器"""
 
     def parse(self, filepath: str) -> dict:
-        """解析 XML 文件
-
-        Args:
-            filepath: 文件路径
-
-        Returns:
-            解析后的数据（模拟返回字典）
-        """
         # TODO: 返回模拟解析结果，如 {"name": "Alice", "age": "30"}
-        return {"name": "Alice", "age": "30", "city": "Beijing"}
+        raise NotImplementedError
 
 
 class FileParserFactory:
@@ -227,11 +205,4 @@ class FileParserFactory:
         """
         # TODO: 解析文件扩展名并创建对应的解析器
         # 提示：可以用 filepath.endswith() 或 os.path.splitext()
-        if filepath.endswith(".csv"):
-            return CsvParser()
-        elif filepath.endswith(".json"):
-            return JsonParser()
-        elif filepath.endswith(".xml"):
-            return XmlParser()
-        else:
-            raise ValueError(f"不支持的文件格式: {filepath}")
+        raise NotImplementedError

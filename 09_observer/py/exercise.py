@@ -50,12 +50,20 @@ class Stock:
         self._price = price
         self._investors: List[Investor] = []
 
-    # TODO: 实现 register(investor) 方法，注册投资者
-    # TODO: 实现 unregister(investor) 方法，注销投资者
+    def register(self, investor: Investor):
+        """注册投资者（观察者）"""
+        # TODO: 将 investor 添加到 _investors 列表中
+        raise NotImplementedError
+
+    def unregister(self, investor: Investor):
+        """注销投资者（观察者）"""
+        # TODO: 从 _investors 列表中移除 investor
+        raise NotImplementedError
 
     def _notify_investors(self):
         """通知所有投资者"""
-        # TODO: 遍历 _investors 列表，调用每个投资者的 update 方法
+        # TODO: 遍历 _investors 列表，调用每个投资者的 update(stock_name, price)
+        raise NotImplementedError
 
     @property
     def price(self) -> float:
@@ -65,7 +73,7 @@ class Stock:
     def price(self, new_price: float):
         """设置新价格并自动通知"""
         # TODO: 更新 _price，然后调用 _notify_investors()
-        pass
+        raise NotImplementedError
 
 
 # 具体观察者：个人投资者
@@ -109,12 +117,20 @@ class UserManager:
     def __init__(self):
         self._observers: List[Observer] = []
 
-    # TODO: 实现 register_observer(observer) 方法
-    # TODO: 实现 remove_observer(observer) 方法
+    def register_observer(self, observer: Observer):
+        """注册观察者"""
+        # TODO: 将 observer 添加到 _observers 列表中
+        raise NotImplementedError
+
+    def remove_observer(self, observer: Observer):
+        """移除观察者"""
+        # TODO: 从 _observers 列表中移除 observer
+        raise NotImplementedError
 
     def notify_observers(self, event_type: str, data: dict):
         """通知所有观察者"""
         # TODO: 遍历 _observers，调用每个观察者的 update(event_type, data)
+        raise NotImplementedError
 
     def register_user(self, username: str, email: str, phone: str):
         """
@@ -122,7 +138,7 @@ class UserManager:
         data 应包含: username, email, phone
         """
         # TODO: 调用 notify_observers("user_registered", data)
-        pass
+        raise NotImplementedError
 
 
 # 具体观察者：邮件通知器
@@ -191,19 +207,35 @@ class NewsAgency:
         self._channels: List[PullObserver] = []
         self._news_list: List[str] = []
 
-    # TODO: 实现 register_channel(channel) 方法
-    # TODO: 实现 unregister_channel(channel) 方法
+    def register_channel(self, channel: PullObserver):
+        """注册频道（观察者）"""
+        # TODO: 将 channel 添加到 _channels 列表中
+        raise NotImplementedError
+
+    def unregister_channel(self, channel: PullObserver):
+        """注销频道（观察者）"""
+        # TODO: 从 _channels 列表中移除 channel
+        raise NotImplementedError
 
     def notify_channels(self):
         """Pull 方式：只通知，不传数据"""
         # TODO: 遍历 _channels，调用每个 channel 的 update()
+        raise NotImplementedError
 
     def publish_news(self, news: str):
         """发布新新闻"""
         # TODO: 添加新闻到 _news_list，然后调用 notify_channels()
+        raise NotImplementedError
 
-    # TODO: 添加 getter 方法 get_all_news()，返回所有新闻列表
-    # TODO: 添加 getter 方法 get_latest_news()，返回最后一条新闻
+    def get_all_news(self) -> List[str]:
+        """返回所有新闻列表"""
+        # TODO: 返回 _news_list
+        raise NotImplementedError
+
+    def get_latest_news(self) -> str:
+        """返回最后一条新闻"""
+        # TODO: 如果 _news_list 不为空，返回最后一条；否则返回空字符串
+        raise NotImplementedError
 
 
 # 具体观察者：新闻频道（Pull 模式）
